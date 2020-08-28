@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.compo" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">#FF9800</item>
+        <item name="colorAccent">#FFC107</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>
