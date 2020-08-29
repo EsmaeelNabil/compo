@@ -1,4 +1,4 @@
-package com.esmaeel.compo.ui.res
+package com.esmaeel.compo.res
 
 import androidx.compose.ui.graphics.Color
 

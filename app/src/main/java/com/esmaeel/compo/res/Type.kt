@@ -1,4 +1,4 @@
-package com.esmaeel.compo.ui.res
+package com.esmaeel.compo.res
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

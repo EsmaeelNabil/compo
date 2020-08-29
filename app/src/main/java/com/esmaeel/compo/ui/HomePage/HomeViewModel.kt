@@ -20,6 +20,14 @@ class HomeViewModel : ViewModel() {
         get() = _personsData
 
 
+    /**
+     * viewModelScope.launch -> calls the request on a coroutine's viewModel lifeCycle way
+     * like if the ViewModel is disposed the current job will be disposed too.
+     *
+     * calling the repository to make the request.
+     * flowOn(Dispatchers.IO) makes the request on Background Thread.
+     * collect is like observing the emits that comes from the repository.
+     */
     @InternalCoroutinesApi
     fun fetchPersons(page: Int = 1) {
         viewModelScope.launch {

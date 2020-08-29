@@ -27,11 +27,11 @@ import androidx.compose.ui.unit.sp
 import androidx.ui.tooling.preview.Preview
 import com.esmaeel.compo.data.models.PopularPersonsResponse
 import com.esmaeel.compo.data.models.Results
-import com.esmaeel.compo.ui.StaggeredVerticalGrid
-import com.esmaeel.compo.ui.res.CompoTheme
-import com.esmaeel.compo.ui.res.blueme
-import com.esmaeel.compo.ui.res.materialGreen
-import com.esmaeel.compo.ui.res.materialRed
+import com.esmaeel.compo.ui.customComposables.StaggeredVerticalGrid
+import com.esmaeel.compo.res.CompoTheme
+import com.esmaeel.compo.res.blueme
+import com.esmaeel.compo.res.materialGreen
+import com.esmaeel.compo.res.materialRed
 import com.esmaeel.composepalygroundtwo.Status
 import dev.chrisbanes.accompanist.coil.CoilImageWithCrossfade
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -75,6 +75,7 @@ fun HomeScreen(
                     backgroundColor = Color.Black,
                     text = { Text(text = "Refresh", color = Color.White) },
                     onClick = {
+                        // fetch a new page from the API
                         ++pageNumber
                         viewModel.fetchPersons(page = pageNumber)
                     })
@@ -89,9 +90,8 @@ fun HomeScreen(
             HomeScreenContent(
                 viewModel,
                 context,
-            ) {
-                drawerState.open()
-            }
+                onDrawerIconClicked = { drawerState.open() }
+            )
 
         }
 
@@ -105,7 +105,10 @@ fun HomeScreenContent(
     onDrawerIconClicked: () -> Unit
 ) {
     ScrollableColumn {
+        // for making the topBarUi on top of the list (like a FramLayout )
         Stack {
+
+            // custom view as a top bar
             topAppBarUi(
                 onDrawerIconClicked = { onDrawerIconClicked.invoke() },
                 onSearchClicked = {
@@ -117,13 +120,17 @@ fun HomeScreenContent(
                 }
             )
 
+            // body content
+            // like a viewGroup
             Box(
                 modifier = Modifier.fillMaxSize(),
                 gravity = ContentGravity.Center
             ) {
 
+                // observe the changes on the data from the viewModel as a state ( for recompositions )
                 val apiData by viewModel.personsData.observeAsState()
 
+                // deal with type of states and show different composables based on the scenario.
                 when (apiData!!.status) {
                     Status.LOADING -> CircularProgressIndicator(strokeWidth = 20.dp)
                     Status.SUCCESS -> moviesList(apiData!!.data)
@@ -144,6 +151,7 @@ fun topAppBarUi(onDrawerIconClicked: () -> Unit, onSearchClicked: () -> Unit) {
         elevation = 15.dp,
         modifier = Modifier.fillMaxWidth().padding(16.dp)
     ) {
+        // Like LinearLayout ( Horizontal )
         Row(verticalGravity = Alignment.CenterVertically) {
 
             IconButton(onClick = {
@@ -165,6 +173,8 @@ fun topAppBarUi(onDrawerIconClicked: () -> Unit, onSearchClicked: () -> Unit) {
     }
 }
 
+
+// viewing the item with dark mode enabled
 @Preview(showBackground = true)
 @Composable
 fun appBarPreviewDark() {
@@ -173,6 +183,8 @@ fun appBarPreviewDark() {
     }
 }
 
+
+// viewing the item with light mode enabled
 @Preview(showBackground = true)
 @Composable
 fun appBarPreviewLight() {
@@ -183,6 +195,7 @@ fun appBarPreviewLight() {
 
 @Composable
 fun DrawerUi() {
+    // TODO: 8/29/20 complete it
     Text(text = "drawerContent")
 }
 
@@ -203,6 +216,7 @@ fun ErrorUi(error: String? = "Error") {
 @Composable
 fun moviesList(data: PopularPersonsResponse? = PopularPersonsResponse()) {
     data?.let {
+        // like a RecyclerViewer but we need to handle the state for it properly
 //        LazyColumnFor(
 //            contentPadding = InnerPadding(top = 70.dp, start = 16.dp, end = 16.dp),
 //            items = data.results!!,
@@ -210,12 +224,14 @@ fun moviesList(data: PopularPersonsResponse? = PopularPersonsResponse()) {
 //            ListElement(item)
 //        }
 
+        // like a scroll view with no recycling or caching the views
 //        ScrollableColumn() {
 //            for (item in data.results!!) {
 //                ListElement(item)
 //            }
 //        }
 
+        // a custom view for placing the views with a grid view style or lets say a staggeredGridViw ( recyclerview layout manager )
         StaggeredVerticalGrid(
             maxColumnWidth = 300.dp,
             modifier = Modifier.padding(top = 70.dp, start = 16.dp, end = 16.dp, bottom = 70.dp)
@@ -231,8 +247,8 @@ fun moviesList(data: PopularPersonsResponse? = PopularPersonsResponse()) {
 @Composable
 fun ListElement(item: Results? = Results()) {
 
+    // remembering the last selected color for the item for if the item is recomposed again it will remember it's previous state
     var currentColor = remember(item) { mutableStateOf(materialRed) }
-//    var currentColor = stateFor(Int){materialRed}
 
     Box(modifier = Modifier.clickable(enabled = true, onClick = {
         currentColor.value = if (currentColor.value == materialRed) materialGreen else materialRed
@@ -248,6 +264,8 @@ fun ListElement(item: Results? = Results()) {
                 Box(
                     modifier = Modifier.fillMaxWidth()
                 ) {
+
+                    // a library that is made of Coil loading library for android kotlin
                     CoilImageWithCrossfade(
                         "https://image.tmdb.org/t/p/w185${item!!.profile_path!!}",
                         contentScale = ContentScale.Crop,

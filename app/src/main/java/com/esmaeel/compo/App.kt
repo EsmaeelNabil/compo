@@ -11,6 +11,8 @@ import okhttp3.OkHttpClient
 class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
+
+        // initiating the coil library for caching and other stuff.
         Coil.setImageLoader {
             val coilOkHttpClient = OkHttpClient.Builder()
                 .cache(CoilUtils.createDefaultCache(this@App))
