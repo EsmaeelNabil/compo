@@ -132,7 +132,7 @@ fun HomeScreenContent(
 
                 // deal with type of states and show different composables based on the scenario.
                 when (apiData!!.status) {
-                    Status.LOADING -> CircularProgressIndicator(strokeWidth = 20.dp)
+                    Status.LOADING -> CircularProgressIndicator(modifier = Modifier.fillMaxSize(),strokeWidth = 20.dp)
                     Status.SUCCESS -> moviesList(apiData!!.data)
                     Status.ERROR -> ErrorUi(apiData!!.message)
                 }

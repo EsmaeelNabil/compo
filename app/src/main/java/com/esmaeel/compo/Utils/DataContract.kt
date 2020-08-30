@@ -1,4 +1,5 @@
 package com.esmaeel.composepalygroundtwo
+
 /*
 * this data class holds the data with different status to check for
 * the same class hold the Data & Status & Error
