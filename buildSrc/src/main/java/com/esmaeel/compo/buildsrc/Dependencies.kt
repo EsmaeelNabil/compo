@@ -95,7 +95,7 @@ object Libs {
             const val rules = "androidx.test:rules:$version"
 
             object Ext {
-                private const val version = "1.1.2-rc01"
+                private const val version = "1.1.5"
                 const val junit = "androidx.test.ext:junit-ktx:$version"
             }
 
