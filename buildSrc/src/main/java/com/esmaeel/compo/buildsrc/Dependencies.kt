@@ -6,7 +6,7 @@ object Versions {
 
 object Libs {
     const val androidGradlePlugin = "com.android.tools.build:gradle:4.2.0-alpha08"
-    const val junit = "junit:junit:4.13"
+    const val junit = "junit:junit:4.13.2"
 
     object Accompanist {
         private const val version = "0.2.0"
