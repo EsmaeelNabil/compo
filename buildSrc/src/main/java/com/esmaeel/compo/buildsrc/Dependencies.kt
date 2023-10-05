@@ -33,7 +33,7 @@ object Libs {
     }
 
     object Ktx {
-        private const val live_data_version = "2.1.0-beta01"
+        private const val live_data_version = "2.6.2"
         private const val fragment_ktx_version = "1.2.5"
         const val viewModelScope = "androidx.lifecycle:lifecycle-viewmodel-ktx:$live_data_version"
         const val lifecycleScope = "androidx.lifecycle:lifecycle-runtime-ktx:$live_data_version"
